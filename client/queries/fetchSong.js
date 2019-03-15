@@ -5,6 +5,13 @@ export default gql`
     song(id: $id) {
       id
       title
+      lyrics {
+        id
+        content
+        likes
+      }
     }
   }
 `;
+
+// Make sure always include the var names because optimistic response won't work

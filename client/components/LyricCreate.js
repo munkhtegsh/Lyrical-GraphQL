@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import {graphql} from 'react-apollo';
+import fetchLyrics from '../queries/fetchLyrics';
 
 class LyricCreate extends Component {
   constructor(props) {
@@ -12,10 +13,10 @@ class LyricCreate extends Component {
 
   submit(e) {
     e.preventDefault();
-    console.log(this.props);
     this.props
       .mutate({
         variables: {content: this.state.content, songId: this.props.id},
+        refetchQueries: [{fetchLyrics}],
       })
       .then(() => this.setState({content: ''}));
   }
@@ -24,7 +25,7 @@ class LyricCreate extends Component {
     return (
       <form onSubmit={e => this.submit(e)}>
         <label> Add a Lyric </label>
-        <input onChange={e => this.setState({contet: e.target.value})} />
+        <input onChange={e => this.setState({content: e.target.value})} />
       </form>
     );
   }
@@ -38,9 +39,10 @@ const mutation = gql`
       lyrics {
         id
         content
+        likes
       }
     }
   }
 `;
 
-export default graphql(mutation)(LyricCreate);
+export default graphql(mutation)(graphql(fetchLyrics)(LyricCreate));

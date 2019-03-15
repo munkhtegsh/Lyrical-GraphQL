@@ -9,7 +9,9 @@ import SongCreate from './components/SongCreate';
 import SongDetail from './components/SongDetail';
 import './style/style.css';
 
-const client = new ApolloClient({});
+const client = new ApolloClient({
+  dataIdFromObject: o => o.id, // o is referring to object and used it for adding new Lyric
+});
 
 // ApolloProvider have to wrap other libriries like react-router
 const Root = () => {
